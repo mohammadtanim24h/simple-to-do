@@ -22,7 +22,12 @@ const Header = () => {
                     </Nav>
                     <Nav className="me-auto">
                         {user ? (
-                            <button onClick={() => signOut(auth)} className="btn btn-outline-dark">Logout</button>
+                            <button
+                                onClick={() => signOut(auth)}
+                                className="btn btn-outline-dark"
+                            >
+                                Logout
+                            </button>
                         ) : (
                             <Nav.Link as={Link} to="/login">
                                 Login

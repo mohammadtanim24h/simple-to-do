@@ -1,12 +1,18 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 const ToDo = () => {
+    const handleAddTask = (e) => {
+        e.preventDefault();
+        const taskName = e.target.name.value;
+        const description = e.target.description.value;
+        console.log(taskName, description);
+    }
     return (
         <div className="mt-3 container mx-auto">
             <h2 className="text-success text-center">Add a task</h2>
             <div className="w-50 mx-auto">
-                <Form>
+                <Form onSubmit={handleAddTask}>
                     <Form.Group
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
@@ -23,8 +29,16 @@ const ToDo = () => {
                         controlId="exampleForm.ControlTextarea1"
                     >
                         <Form.Label>Task Description</Form.Label>
-                        <Form.Control name="description" as="textarea" placeholder="Description" rows={3} />
+                        <Form.Control
+                            name="description"
+                            as="textarea"
+                            placeholder="Description"
+                            rows={3}
+                        />
                     </Form.Group>
+                    <Button variant="success" className="w-25" type="submit">
+                        Submit
+                    </Button>
                 </Form>
             </div>
         </div>
