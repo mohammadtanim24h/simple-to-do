@@ -49,9 +49,25 @@ const ToDo = () => {
             });
     };
 
-    const handleCompleted = () => {
-        
+    const handleCompleted = (id) => {
+        fetch(`http://localhost:5000/task/${id}`, {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({textDecoration: true})
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if(data.modifiedCount) {
+                toast.success("Task is successfully marked as completed");
+                refetch();
+            }
+        })
+
     }
+
     return (
         <div className="mt-3 container mx-auto">
             <h2 className="text-success text-center">Add a task</h2>
@@ -66,6 +82,7 @@ const ToDo = () => {
                             type="text"
                             name="name"
                             placeholder="Your Task"
+                            required
                         />
                     </Form.Group>
                     <Form.Group
@@ -77,6 +94,7 @@ const ToDo = () => {
                             name="description"
                             as="textarea"
                             placeholder="Description"
+                            required
                             rows={3}
                         />
                     </Form.Group>
@@ -99,13 +117,13 @@ const ToDo = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {tasks?.map(({ _id, taskName, description }, index) => (
+                    {tasks?.map(({ _id, taskName, description, textDecoration }, index) => (
                         <tr key={_id}>
                             <td>{index + 1}</td>
-                            <td>{taskName}</td>
+                            <td className={`text-decoration-${textDecoration ? 'line-through' : 'none'}`}>{taskName}</td>
                             <td>{description}</td>
                             <td className="text-center">
-                                <button onClick={handleCompleted} className="btn btn-success">
+                                <button onClick={() => handleCompleted(_id)} className="btn btn-success">
                                     Completed
                                 </button>
                             </td>
