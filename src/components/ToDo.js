@@ -1,11 +1,25 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
+import Loading from "./Loading";
 
 const ToDo = () => {
     const [user] = useAuthState(auth);
+    const { data: tasks, isLoading, refetch } = useQuery("tasks", () =>
+        fetch(`http://localhost:5000/task/${user?.email}`).then((res) =>
+            res.json()
+        )
+    );
+
+    if(isLoading) {
+        return <Loading></Loading>
+    }
+
+    console.log(tasks);
+
     const handleAddTask = (e) => {
         e.preventDefault();
         const taskName = e.target.name.value;
@@ -28,6 +42,7 @@ const ToDo = () => {
                 if (data.insertedId) {
                     toast.success("Task is added successfully");
                     e.target.reset();
+                    refetch();
                 }
             });
     };
