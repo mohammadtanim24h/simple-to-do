@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ToDo from "./components/ToDo";
 import RequireAuth from "./components/RequireAuth";
 import Header from "./components/Header";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     return (
@@ -23,6 +25,7 @@ function App() {
                 ></Route>
                 <Route path="/login" element={<Login></Login>}></Route>
             </Routes>
+            <ToastContainer></ToastContainer>
         </div>
     );
 }
