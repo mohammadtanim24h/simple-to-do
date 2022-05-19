@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
@@ -8,17 +8,19 @@ import Loading from "./Loading";
 
 const ToDo = () => {
     const [user] = useAuthState(auth);
-    const { data: tasks, isLoading, refetch } = useQuery("tasks", () =>
+    const {
+        data: tasks,
+        isLoading,
+        refetch,
+    } = useQuery("tasks", () =>
         fetch(`http://localhost:5000/task/${user?.email}`).then((res) =>
             res.json()
         )
     );
 
-    if(isLoading) {
-        return <Loading></Loading>
+    if (isLoading) {
+        return <Loading></Loading>;
     }
-
-    console.log(tasks);
 
     const handleAddTask = (e) => {
         e.preventDefault();
@@ -46,6 +48,10 @@ const ToDo = () => {
                 }
             });
     };
+
+    const handleCompleted = () => {
+        
+    }
     return (
         <div className="mt-3 container mx-auto">
             <h2 className="text-success text-center">Add a task</h2>
@@ -82,6 +88,36 @@ const ToDo = () => {
 
             <hr />
             <h2 className="text-center text-success">Your Tasks</h2>
+            <Table bordered hover>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th className="text-center">Completed</th>
+                        <th className="text-center">Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tasks?.map(({ _id, taskName, description }, index) => (
+                        <tr key={_id}>
+                            <td>{index + 1}</td>
+                            <td>{taskName}</td>
+                            <td>{description}</td>
+                            <td className="text-center">
+                                <button onClick={handleCompleted} className="btn btn-success">
+                                    Completed
+                                </button>
+                            </td>
+                            <td className="text-center">
+                                <button className="btn btn-danger">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </div>
     );
 };
