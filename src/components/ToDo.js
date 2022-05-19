@@ -68,6 +68,19 @@ const ToDo = () => {
 
     }
 
+    const handleDelete = (id) => {
+        fetch(`http://localhost:5000/task/${id}`, {
+            method: "DELETE"
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.deletedCount === 1) {
+                toast.success("Task is deleted successfully");
+                refetch();
+            }
+        })
+    }
+
     return (
         <div className="mt-3 container mx-auto">
             <h2 className="text-success text-center">Add a task</h2>
@@ -128,7 +141,7 @@ const ToDo = () => {
                                 </button>
                             </td>
                             <td className="text-center">
-                                <button className="btn btn-danger">
+                                <button onClick={() => handleDelete(_id)} className="btn btn-danger">
                                     Delete
                                 </button>
                             </td>
