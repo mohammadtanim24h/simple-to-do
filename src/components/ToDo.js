@@ -13,7 +13,7 @@ const ToDo = () => {
         isLoading,
         refetch,
     } = useQuery("tasks", () =>
-        fetch(`http://localhost:5000/task/${user?.email}`).then((res) =>
+        fetch(`https://secret-lowlands-02264.herokuapp.com/task/${user?.email}`).then((res) =>
             res.json()
         )
     );
@@ -31,7 +31,7 @@ const ToDo = () => {
             description,
             email: user?.email,
         };
-        fetch("http://localhost:5000/task", {
+        fetch("https://secret-lowlands-02264.herokuapp.com/task", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -50,7 +50,7 @@ const ToDo = () => {
     };
 
     const handleCompleted = (id) => {
-        fetch(`http://localhost:5000/task/${id}`, {
+        fetch(`https://secret-lowlands-02264.herokuapp.com/task/${id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json"
@@ -69,7 +69,7 @@ const ToDo = () => {
     }
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/task/${id}`, {
+        fetch(`https://secret-lowlands-02264.herokuapp.com/task/${id}`, {
             method: "DELETE"
         })
         .then(res => res.json())
@@ -136,7 +136,7 @@ const ToDo = () => {
                             <td className={`text-decoration-${textDecoration ? 'line-through' : 'none'}`}>{taskName}</td>
                             <td>{description}</td>
                             <td className="text-center">
-                                <button onClick={() => handleCompleted(_id)} className="btn btn-success">
+                                <button disabled={textDecoration} onClick={() => handleCompleted(_id)} className="btn btn-success">
                                     Completed
                                 </button>
                             </td>
